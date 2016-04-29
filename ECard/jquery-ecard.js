@@ -19,6 +19,8 @@
 					ajust : function() {
 
 						this.self.$ecard.ec_cards = $(this.self).find("> .ec_cards");
+						this.self.$ecard.ec_cards.removeClass("ec_cards_hover");
+
 						var ww = $(this.self).width();
 						this.self.$ecard.ww = ww;
 
@@ -78,6 +80,30 @@
 
 			// ---------------------------------------------------------------------
 
+			$(this).bind('mousedown', function(e) {
+
+				if (this.$ecard.touching) {
+					return;
+				}
+
+				this.$ecard.touching = true;
+				this.$ecard.moving = false;
+				this.$ecard.initTime = new Date().getTime();
+				this.$ecard.endTime = null;
+				this.$ecard.dx = 0;
+
+				this.$ecard.initcards = parseInt(this.$ecard.ec_cards.css("left"));
+
+				this.$ecard.touch_identifier = 0;
+				this.$ecard.startPoint = {
+					x : e.pageX,
+					y : e.pageY
+				};
+
+			});
+
+			// ---------------------------------------------------------------------
+
 			$(this).bind('touchstart', function(e) {
 
 				if (this.$ecard.touching) {
@@ -107,6 +133,19 @@
 
 			// ----------------------------------------------------------------------
 
+			$(this).bind('mouseup', function(e) {
+				this.$ecard.endTime = new Date().getTime();
+
+				if (!this.$ecard.touching) {
+					return;
+				}
+
+				this.$ecard.ajust();
+				this.$ecard.touching = false;
+			});
+
+			// ----------------------------------------------------------------------
+
 			$(this).bind('touchend', function(e) {
 
 				this.$ecard.endTime = new Date().getTime();
@@ -129,12 +168,55 @@
 
 			// ----------------------------------------------------------------------
 
+			$(this).bind('mouseleave', function(e) {
+				if (this.$ecard.touching) {
+					e.preventDefault();
+					this.$ecard.touching = false;
+					this.$ecard.ajust();
+				}
+			});
+
+			// ----------------------------------------------------------------------
+
 			$(this).bind('touchcancel', function(e) {
+				if (this.$ecard.touching) {
+					e.preventDefault();
+					this.$ecard.touching = false;
+					this.$ecard.ajust();
+				}
+			});
 
-				this.$ecard.touching = false;
-				this.$ecard.ajust();
+			// ----------------------------------------------------------------------
 
-				$(this).trigger('tap-failed');
+			$(this).bind('mousemove', function(e) {
+
+				if (!this.$ecard.touching) {
+					return;
+				}
+
+				var dx = e.pageX - this.$ecard.startPoint.x;
+				var dy = e.pageY - this.$ecard.startPoint.y;
+
+				console.log(dx);
+
+				if (this.$ecard.moving) {
+					e.preventDefault();
+					this.$ecard.dx = dx;
+					var ll = this.$ecard.initcards + dx;
+					this.$ecard.ec_cards.css("left", ll + "px");
+				} else {
+
+					if (Math.abs(dy) > 15) {
+						this.$ecard.touching = false;
+						return false;
+					}
+
+					if (Math.abs(dx) > 30) {
+						this.$ecard.moving = true;
+						this.$ecard.ec_cards.addClass("ec_cards_hover");
+					}
+				}
+
 			});
 
 			// ----------------------------------------------------------------------
@@ -165,13 +247,14 @@
 							this.$ecard.ec_cards.css("left", ll + "px");
 						} else {
 
-							if (Math.abs(dy) > 10) {
+							if (Math.abs(dy) > 15) {
 								this.$ecard.touching = false;
 								return false;
 							}
 
 							if (Math.abs(dx) > 30) {
 								this.$ecard.moving = true;
+								this.$ecard.ec_cards.addClass("ec_cards_hover");
 							}
 						}
 
@@ -189,7 +272,12 @@
 }(jQuery));
 
 $(function() {
+
 	$(".ec_area").ecard();
+
+	window.setTimeout(function() {
+		$(".ec_area").ecard();
+	}, 100);
 
 	$(window).resize(function() {
 		$(".ec_area").each(function() {
