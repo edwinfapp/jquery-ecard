@@ -1,0 +1,30 @@
+.ec_area {
+	overflow: hidden;
+	position: relative;
+	display: inline-block;
+	margin: 0px;
+	padding: 0px;
+}
+
+.ec_cards {
+	display: block;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	top: 0px;
+	left: 0px;
+	margin: 0px;
+	padding: 0px;
+}
+
+.ec_card {
+	display: block;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	overflow-x: hidden;
+	margin: 0px;
+	padding: 0px;
+}
