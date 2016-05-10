@@ -128,7 +128,7 @@ $(function() {
 
 	// ---------------------------------------------------------------------
 
-	$("body").bind('touchstart', function(e) {
+	$("body").on('touchstart', ".ec_area", function(e) {
 
 		if (this.$ecard === undefined) {
 			return;
@@ -258,7 +258,7 @@ $(function() {
 					return false;
 				}
 
-				if (Math.abs(dx) > 30) {
+				if (Math.abs(dx) > 20) {
 					this.$ecard.moving = true;
 					this.$ecard.ec_cards.addClass("ec_cards_hover");
 				}
@@ -303,7 +303,7 @@ $(function() {
 							return false;
 						}
 
-						if (Math.abs(dx) > 30) {
+						if (Math.abs(dx) > 20) {
 							this.$ecard.moving = true;
 							this.$ecard.ec_cards.addClass("ec_cards_hover");
 						}
