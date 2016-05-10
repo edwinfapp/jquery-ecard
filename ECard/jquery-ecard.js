@@ -1,3 +1,6 @@
+/**
+ * https://github.com/edwinfapp/jquery-ecard 
+ */
 (function($) {
 
 	$.fn.ecard = function() {
@@ -100,8 +103,6 @@ $(function() {
 
 	$("body").on('mousedown', ".ec_area", function(e) {
 
-		console.log("mousedown");
-
 		if (this.$ecard === undefined) {
 			return;
 		}
@@ -165,6 +166,10 @@ $(function() {
 
 		$(".ec_area").each(function() {
 
+			if (this.$ecard === undefined) {
+				return;
+			}
+
 			this.$ecard.endTime = new Date().getTime();
 
 			if (!this.$ecard.touching) {
@@ -182,6 +187,10 @@ $(function() {
 	$("body").on('touchend', function(e) {
 
 		$(".ec_area").each(function() {
+
+			if (this.$ecard === undefined) {
+				return;
+			}
 
 			this.$ecard.endTime = new Date().getTime();
 
@@ -209,6 +218,10 @@ $(function() {
 
 		$(".ec_area").each(function() {
 
+			if (this.$ecard === undefined) {
+				return;
+			}
+
 			if (this.$ecard.touching) {
 				e.preventDefault();
 				this.$ecard.touching = false;
@@ -224,6 +237,10 @@ $(function() {
 
 		$(".ec_area").each(function() {
 
+			if (this.$ecard === undefined) {
+				return;
+			}
+
 			if (this.$ecard.touching) {
 				e.preventDefault();
 				this.$ecard.touching = false;
@@ -238,6 +255,10 @@ $(function() {
 	$("body").on('mousemove', function(e) {
 
 		$(".ec_area").each(function() {
+
+			if (this.$ecard === undefined) {
+				return;
+			}
 
 			if (!this.$ecard.touching) {
 				return;
@@ -273,6 +294,10 @@ $(function() {
 	$("body").on('touchmove', function(e) {
 
 		$(".ec_area").each(function() {
+
+			if (this.$ecard === undefined) {
+				return;
+			}
 
 			if (!this.$ecard.touching) {
 				return;
